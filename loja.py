@@ -1,50 +1,64 @@
 import streamlit as st
 
-# Configuração da página do seu site
-st.set_page_config(page_title="Minha Loja Logzz", page_icon="🛍️")
+# 1. Configuração da Página (Identidade da Empresa)
+st.set_page_config(page_title="Top Ofertas - Oficial", page_icon="🛍️", layout="wide")
 
-st.title("🚀 Minha Vitrine de Produtos")
-st.write("Escolha seu produto e pague apenas no recebimento (Cash on Delivery)!")
+# 2. Cores da Top Ofertas (Design Profissional)
+st.markdown("""
+    <style>
+    /* Cor do fundo e dos botões */
+    .stButton>button {
+        width: 100%;
+        border-radius: 10px;
+        background-color: #FF8C00; /* Laranja da sua logo */
+        color: white;
+        font-weight: bold;
+        border: none;
+        height: 50px;
+        font-size: 18px;
+    }
+    /* Efeito ao passar o mouse */
+    .stButton>button:hover {
+        background-color: #FFA500;
+        color: black;
+    }
+    /* Deixar o título mais bonito */
+    h1 {
+        color: #FF8C00;
+        text-align: center;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-# Aqui é onde você vai colocar seus produtos da Logzz depois
+# 3. Cabeçalho
+st.title("🛍️ Top Ofertas")
+st.write("<p style='text-align: center;'>As melhores ofertas com pagamento na entrega (Cash on Delivery)!</p>", unsafe_allow_html=True)
+
+# 4. Teu Produto (Ajustado com a foto que você já tem)
 produtos = [
-    {    "nome": "Cinta colete modeladora", 
+    {
+        "nome": "Cinta Colete Modeladora", 
         "preco": 99.99, 
         "link": "https://entrega.logzz.com.br/pay/mem6qq3rw/vlqxc-1-unidade",
-        "imagem": "https://logzz-s3.s3.us-east-2.amazonaws.com/uploads/files/products/20240714-131356prok2m05.jpg" # Adicione o link da foto aqui
+        "imagem": "https://logzz-s3.s3.us-east-2.amazonaws.com/uploads/files/products/20240714-131356prok2m05.jpg"
     }
 ]
 
-
-# Criando a vitrine organizada
+# 5. Criando a Vitrine
 col1, col2, col3 = st.columns(3)
 
 for i, produto in enumerate(produtos):
-    with [col1, col2, col3][i % 3]:
+    with col1: # Como você tem 1 produto, vamos focar na primeira coluna
         st.image(produto["imagem"], use_container_width=True)
         st.subheader(produto["nome"])
-        st.write(f"**R$ {produto['preco']:.2f}**")
-        if st.button(f"Comprar {produto['nome']}", key=i):
-            st.success("Redirecionando para o checkout...")
-            st.write(f"Link de destino: {produto['link']}")
+        st.write(f"### R$ {produto['preco']:.2f}")
+        
+        if st.button(f"COMPRAR AGORA", key=i):
+            st.success("A abrir checkout seguro...")
+            st.markdown(f"**[CLIQUE AQUI PARA FINALIZAR PEDIDO]({produto['link']})**")
 
-st.sidebar.markdown("---")
-st.sidebar.write("📱 **Suporte via WhatsApp**")
-if st.sidebar.button("Falar com Atendente"):
-    st.sidebar.write("Abrindo conversa...")
-
-# Adicionando Suporte no Menu Lateral (Sidebar)
-st.sidebar.markdown("---") # Linha divisória
-st.sidebar.subheader("Precisa de ajuda? 💬")
-
-# Substitua o número abaixo pelo SEU número (DDI + DDD + Número)
-# Exemplo para Brasil: 55 + DDD + Número
-meu_numero = "5571992934052" 
-mensagem_padrao = "Olá! Gostaria de da falar com atendente."
-
-# Link gerador de conversa
-link_whatsapp = f"https://wa.me/{meu_numero}?text={mensagem_padrao.replace(' ', '%20')}"
-
-# Adicionei o parâmetro key="btn_whatsapp" para torná-lo único
-if st.sidebar.button("Falar com Atendente", key="btn_whatsapp"):
-    st.sidebar.markdown(f"[✅ Clique aqui para abrir o WhatsApp]({link_whatsapp})")
+# 6. Botão de Suporte no Menu Lateral
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3081/3081559.png", width=100) # Ícone de loja
+st.sidebar.title("Top Ofertas")
+if st.sidebar.button("Falar com Atendente 💬", key="suporte"):
+    st.sidebar.info("A abrir o WhatsApp de suporte...")
