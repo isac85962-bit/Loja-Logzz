@@ -5,220 +5,188 @@ st.set_page_config(page_title="Top Ofertas - Oficial", page_icon="🦊", layout=
 
 st.markdown("""
     <style>
-    /* Fundo geral */
-    .stApp { background-color: #F5F5F5; }
-    
-    /* Remove espaçamentos desnecessários do Streamlit */
-    .block-container { padding-top: 1rem; padding-bottom: 5rem; }
+    /* Fundo geral mais escuro para destacar os cards */
+    .stApp { background-color: #E5E5E5; }
+    .block-container { padding-top: 0rem; padding-bottom: 5rem; }
 
-    /* HEADER: Barra Superior Laranja Vibrante */
+    /* HEADER: Amarelo Mercado Livre vibrante */
     .header-container {
-        background-color: #FFF159; /* Amarelo ML */
-        padding: 15px 20px;
-        border-bottom: 1px solid #ddd;
+        background-color: #FFF159;
+        padding: 15px 10%;
         display: flex; align-items: center; justify-content: space-between;
-        margin: -6rem -5rem 1rem -5rem; /* Força ocupar topo total */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        margin: -6rem -5rem 20px -5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
-    /* BARRA DE BENEFÍCIOS (O segredo para não ficar seco) */
-    .benefit-bar {
-        background-color: white;
-        padding: 15px;
-        margin: 10px 0 30px 0;
-        border-radius: 8px;
-        display: flex; justify-content: space-around;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        font-size: 14px; color: #333;
+    /* BARRA DE PESQUISA (Visual) */
+    .search-bar {
+        background: white; padding: 8px 15px; width: 50%;
+        border-radius: 4px; color: #888; display: flex; align-items: center;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1); font-size: 14px;
     }
-    
-    /* ESTILO DOS CARDS DE PRODUTO */
+
+    /* CARD DE PRODUTO */
     .card-box {
-        background: white;
-        border-radius: 8px;
-        border: 1px solid #e6e6e6;
-        padding: 0px; /* Padding zero para imagem encostar */
-        transition: 0.3s;
-        height: 100%;
-        overflow: hidden; /* Para o botão não sair */
+        background: white; border-radius: 8px;
+        padding: 15px; position: relative;
+        transition: 0.3s; height: 100%; border: 1px solid #ddd;
     }
     .card-box:hover {
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2); transform: translateY(-3px);
     }
-    .card-content { padding: 15px; text-align: left; }
-    .tag-frete {
-        background-color: #00a650; color: white;
-        font-size: 10px; padding: 2px 6px; border-radius: 3px;
-        font-weight: bold; display: inline-block; margin-bottom: 5px;
+    
+    /* Elementos do Card */
+    .badge-off {
+        background: #FF4040; color: white; font-size: 10px; font-weight: bold;
+        padding: 2px 6px; border-radius: 3px; position: absolute; top: 10px; right: 10px;
     }
-    .preco-destaque { font-size: 22px; color: #333; font-weight: 400; }
-    .parcelamento { font-size: 12px; color: #00a650; }
+    .img-container {
+        height: 180px; display: flex; align-items: center; justify-content: center;
+        margin-bottom: 10px; border-bottom: 1px solid #f0f0f0;
+    }
+    .titulo-prod { font-size: 14px; color: #333; height: 40px; overflow: hidden; margin-bottom: 5px; line-height: 1.2; }
+    .preco-antigo { text-decoration: line-through; color: #999; font-size: 12px; }
+    .preco-atual { font-size: 24px; color: #333; font-weight: 400; }
+    .frete-full { color: #00A650; font-weight: bold; font-size: 12px; font-style: italic; }
+    .stars { color: #FFD700; font-size: 12px; margin-bottom: 5px; }
 
-    /* Estilo do Botão Streamlit para parecer parte do Card */
+    /* Botão Integrado */
     .stButton > button {
-        width: 100%;
-        border-radius: 0 0 8px 8px !important; /* Arredonda só embaixo */
-        background-color: #3483fa !important; /* Azul Compra */
-        color: white !important;
-        border: none;
-        font-weight: bold;
-        margin-top: 0px;
-    }
-
-    /* FOOTER (Rodapé) */
-    .footer {
-        background-color: #333; color: white;
-        padding: 40px; text-align: center;
-        margin: 50px -5rem -5rem -5rem;
+        width: 100%; border-radius: 6px !important;
+        background-color: #3483FA !important; color: white !important;
+        border: none; font-weight: bold; height: 40px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 2. BANCO DE DADOS (Seus Produtos)
+# 2. BANCO DE DADOS (Atualizei a imagem do MOP que estava quebrada)
 produtos = {
     "cinta": {
-        "nome": "Cinta Colete Modeladora Ampla - Reduz Medidas",
-        "preco": "99,99",
+        "nome": "Cinta Modeladora Yoga Premium Alta Compressão",
+        "preco_antigo": "159,90", "preco": "99,99",
         "img": "https://logzz-s3.s3.us-east-2.amazonaws.com/uploads/files/products/20240714-131356prok2m05.jpg",
-        "categoria": "Moda e Beleza",
         "link": "https://entrega.logzz.com.br/pay/mem6qq3rw/vlqxc-1-unidade",
-        "descricao": "Cinta de alta compressão. Não enrola, corrige postura e afina a cintura.",
-        "topicos": ["✅ 12 Barbatanas de Silicone", "✅ Tecido Respirável", "✅ Ajuste em 3 níveis"]
+        "stars": "⭐⭐⭐⭐⭐ (4.9)",
+        "descricao": "Reduza medidas instantaneamente com conforto total.",
+        "topicos": ["✅ Não enrola", "✅ Corrige postura", "✅ Invisível na roupa"]
     },
     "depilador": {
-        "nome": "Depilador SkinLiss Pro - Sem Dor",
-        "preco": "89,90",
+        "nome": "Depilador Elétrico SkinLiss Finishing Touch",
+        "preco_antigo": "120,00", "preco": "89,90",
         "img": "https://a-static.mlcdn.com.br/470x352/depilador-yes-finishing-touch-sem-fio-ativacao-sensor-de-luz-rosto-e-corpo-depiladorlaser/connectcellcomercio/depiladorroxo16/958b6b6bada9045715419c0988f0a3b6.jpeg",
-        "categoria": "Moda e Beleza",
         "link": "https://entrega.logzz.com.br/pay/mem0go36g/azjol-skinliss-9999",
-        "descricao": "Remova pelos indesejados em segundos com a tecnologia de luz ativa.",
-        "topicos": ["✅ Bateria Recarregável", "✅ Portátil", "✅ Para todas as áreas"]
+        "stars": "⭐⭐⭐⭐⭐ (4.8)",
+        "descricao": "Pele lisinha sem dor e sem alergias.",
+        "topicos": ["✅ Bateria Recarregável", "✅ Luz Ativa", "✅ Portátil"]
     },
      "mop": {
-        "nome": "Mop Giratório Limpeza Prática 360",
-        "preco": "129,90",
-        "img": "https://m.media-amazon.com/images/I/61pInh3S8zL._AC_SL1200_.jpg",
-        "categoria": "Casa",
+        "nome": "Mop Giratório 360 Limpeza Pesada + Refil",
+        "preco_antigo": "189,90", "preco": "129,90",
+        "img": "https://m.media-amazon.com/images/I/71wWk-iW9WL._AC_SL1500_.jpg", 
         "link": "#",
-        "descricao": "Limpeza completa sem sujar as mãos. Centrifuga e seca.",
-        "topicos": ["✅ Balde reforçado", "✅ Cabo extensor", "✅ Microfibra absorvente"]
+        "stars": "⭐⭐⭐⭐ (4.7)",
+        "descricao": "Esqueça o pano de chão. Limpeza rápida e prática.",
+        "topicos": ["✅ Centrifuga e Seca", "✅ Cabo Extensível", "✅ Microfibra"]
+    },
+    "fone": {
+        "nome": "Fone Bluetooth Pro 5s Cancelamento de Ruído",
+        "preco_antigo": "99,90", "preco": "59,90",
+        "img": "https://m.media-amazon.com/images/I/51rP8-wC2UL._AC_SL1000_.jpg",
+        "link": "#",
+        "stars": "⭐⭐⭐⭐⭐ (5.0)",
+        "descricao": "Som de alta qualidade com preço imbatível.",
+        "topicos": ["✅ Bluetooth 5.0", "✅ Bateria longa duração", "✅ Grave Potente"]
     }
 }
 
 # 3. Lógica de Navegação
 if 'detalhe_id' not in st.session_state: st.session_state.detalhe_id = None
 
-# --- HEADER (Onde fica o Mascote) ---
+# --- HEADER (Onde a mágica visual acontece) ---
 st.markdown(f"""
     <div class="header-container">
-        <div style="display:flex; align-items:center; gap:15px;">
-            <img src="https://raw.githubusercontent.com/isac85962-bit/Loja-Logzz/main/WhatsApp%20Image%202026-01-09%20at%2017.29.39.jpeg" width="50" style="border-radius:50%; border:2px solid white;">
-            <div>
-                <h2 style="margin:0; color:#2d3277; font-size:24px;">Top OFERTAS</h2>
-                <small style="color:#2d3277;">O melhor preço do Brasil</small>
-            </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <img src="https://raw.githubusercontent.com/isac85962-bit/Loja-Logzz/main/WhatsApp%20Image%202026-01-09%20at%2017.29.39.jpeg" width="45" style="border-radius:50%; border:2px solid white;">
+            <span style="font-weight:bold; font-size:20px; color:#2d3277;">TOP OFERTAS</span>
         </div>
-        <div style="background:white; padding:8px 15px; border-radius:20px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-            🔍 Buscar produtos...
-        </div>
+        <div class="search-bar">🔍 Buscar produtos, marcas e muito mais...</div>
+        <div style="font-size:24px;">🛒</div>
     </div>
 """, unsafe_allow_html=True)
 
-# --- TELA DE DETALHES DO PRODUTO ---
+# --- TELA DE DETALHES ---
 if st.session_state.detalhe_id:
     p = produtos[st.session_state.detalhe_id]
     
-    if st.button("⬅️ Voltar para o início"):
+    st.markdown(f"<div style='padding:0 5%;'><button style='background:none; border:none; color:#3483fa; cursor:pointer; font-weight:bold;'>⬅ Voltar</button></div>", unsafe_allow_html=True)
+    if st.button("⬅️ VOLTAR PARA OFERTAS"):
         st.session_state.detalhe_id = None
         st.rerun()
 
-    # Layout de Detalhes (Fundo Branco centralizado)
     with st.container():
-        st.markdown('<div style="background:white; padding:30px; border-radius:10px; margin-top:20px;">', unsafe_allow_html=True)
-        col1, col2 = st.columns([1, 1.2])
-        
-        with col1:
-            st.image(p["img"], use_container_width=True)
-        
-        with col2:
-            st.caption("Novo | +1000 vendidos")
-            st.title(p["nome"])
+        st.markdown('<div style="background:white; padding:30px; border-radius:8px; margin:20px 5%; box-shadow:0 2px 10px rgba(0,0,0,0.1);">', unsafe_allow_html=True)
+        c1, c2 = st.columns([1, 1])
+        with c1: st.image(p["img"], use_container_width=True)
+        with c2:
             st.markdown(f"""
-                <h1 style="color:#333; font-weight:300; font-size:36px;">R$ {p['preco']}</h1>
-                <p style="color:#00a650; font-weight:bold;">em 12x R$ {float(p['preco'].replace(',','.'))/12:.2f} sem juros</p>
-                <p style="color:#00a650; font-weight:bold;">Frete Grátis para todo o país 🚚</p>
+                <span style="font-size:12px; color:#999;">Novo | +500 vendidos</span>
+                <h1 style="font-size:22px; margin:5px 0;">{p['nome']}</h1>
+                <div style="color:#FFD700; margin-bottom:10px;">{p['stars']} (120 avaliações)</div>
+                <div style="background:#333; color:white; padding:5px 10px; border-radius:4px; display:inline-block; font-size:12px; margin-bottom:10px;">OFERTA DO DIA</div>
+                <p style="text-decoration:line-through; color:#ccc; margin:0;">R$ {p['preco_antigo']}</p>
+                <p style="font-size:36px; color:#333; font-weight:300; margin:0;">R$ {p['preco']}</p>
+                <p style="color:#00a650; font-size:14px; font-weight:bold;">em 12x sem juros</p>
+                <p style="color:#00a650; font-weight:bold;">⚡ Chegará grátis amanhã!</p>
             """, unsafe_allow_html=True)
-            
             st.write("---")
-            st.write(f"**O que você precisa saber:**")
-            for t in p["topicos"]: st.write(t)
-            
+            for t in p["topicos"]: st.markdown(f"<p style='margin:5px 0;'>{t}</p>", unsafe_allow_html=True)
             st.write("")
             st.link_button("COMPRAR AGORA", p["link"], use_container_width=True)
-            
         st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Descrição extra embaixo
-        st.markdown(f"""
-            <div style="background:white; padding:30px; border-radius:10px; margin-top:20px;">
-                <h3>Descrição</h3>
-                <p>{p['descricao']}</p>
-            </div>
-        """, unsafe_allow_html=True)
 
 # --- TELA INICIAL (VITRINE) ---
 else:
-    # 1. Banner Principal (Carrossel Simulado)
+    # Banner Rotativo
     st.image("https://http2.mlstatic.com/D_NQ_648500-MLA73797871625_012024-OO.webp", use_container_width=True)
-
-    # 2. BARRA DE CONFIANÇA (O toque profissional)
+    
+    # Faixa de Benefícios
     st.markdown("""
-        <div class="benefit-bar">
-            <div>💳 <b>Pagamento Rápido</b><br><span style="color:grey; font-size:12px">Pague na entrega ou Pix</span></div>
-            <div style="border-left:1px solid #eee; padding-left:20px;">🚚 <b>Frete Grátis</b><br><span style="color:grey; font-size:12px">Em produtos selecionados</span></div>
-            <div style="border-left:1px solid #eee; padding-left:20px;">🛡️ <b>Compra Garantida</b><br><span style="color:grey; font-size:12px">Sua satisfação ou dinheiro de volta</span></div>
+        <div style="background:white; padding:15px; margin:10px 0; border-radius:5px; display:flex; justify-content:space-around; font-size:13px; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+            <span>💳 <b>Até 12x sem juros</b></span>
+            <span>🚚 <b>Frete Grátis</b> para todo Brasil</span>
+            <span>🛡️ <b>Compra Garantida</b></span>
         </div>
+        <h3 style="margin:20px 0; color:#333;">🔥 Ofertas em Destaque</h3>
     """, unsafe_allow_html=True)
 
-    # 3. Listagem de Produtos
-    st.markdown("### 🔥 Ofertas do Dia")
+    # GRID DE PRODUTOS
+    cols = st.columns(4)
+    ids = list(produtos.keys())
     
-    colunas = st.columns(4) # Grid de 4
-    ids_produtos = list(produtos.keys())
-    
-    for i, col in enumerate(colunas):
-        if i < len(ids_produtos):
-            pid = ids_produtos[i]
+    for i, col in enumerate(cols):
+        if i < len(ids):
+            pid = ids[i]
             p = produtos[pid]
-            
             with col:
-                # O HTML cria o visual do card
                 st.markdown(f"""
                     <div class="card-box">
-                        <div style="height:200px; display:flex; align-items:center; justify-content:center; padding:10px;">
-                            <img src="{p['img']}" style="max-height:100%; max-width:100%;">
-                        </div>
-                        <div class="card-content">
-                            <span class="tag-frete">CHEGA AMANHÃ</span>
-                            <p style="font-size:14px; margin-bottom:5px; height:40px; overflow:hidden;">{p['nome']}</p>
-                            <span class="preco-destaque">R$ {p['preco']}</span><br>
-                            <span class="parcelamento">10x R$ 9,90 sem juros</span>
-                        </div>
+                        <span class="badge-off">25% OFF</span>
+                        <div class="img-container"><img src="{p['img']}" style="max-height:100%; max-width:100%;"></div>
+                        <p class="titulo-prod">{p['nome']}</p>
+                        <div class="stars">{p['stars']}</div>
+                        <span class="preco-antigo">R$ {p['preco_antigo']}</span>
+                        <div class="preco-atual">R$ {p['preco']}</div>
+                        <div class="frete-full">Chega amanhã ⚡</div>
                     </div>
                 """, unsafe_allow_html=True)
-                
-                # Botão do Streamlit colado visualmente no card
                 if st.button("Ver Detalhes", key=pid):
                     st.session_state.detalhe_id = pid
                     st.rerun()
 
-# --- RODAPÉ (FOOTER) ---
+# --- RODAPÉ ---
 st.markdown("""
-    <div class="footer">
-        <p><b>Top Ofertas © 2026</b><br>
-        CNPJ: 00.000.000/0001-00<br>
-        Rua do Comércio, 123 - São Paulo, SP</p>
-        <p style="font-size:12px; color:#888;">Imagens meramente ilustrativas.</p>
+    <div style="margin-top:50px; background:#333; color:#fff; padding:30px; text-align:center; font-size:12px;">
+        <p>Copyright © 2026 Top Ofertas - Todos os direitos reservados.</p>
+        <p>CNPJ: 00.000.000/0001-00 | Jaraguá do Sul, SC</p>
     </div>
 """, unsafe_allow_html=True)
