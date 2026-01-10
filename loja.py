@@ -3,6 +3,25 @@ import streamlit as st
 # 1. Configuração da Página
 st.set_page_config(page_title="Top Ofertas - Oficial", page_icon="🛍️", layout="wide")
 
+# --- CONFIGURAÇÃO DO PIXEL FACEBOOK ---
+id_pixel = "COLE_SEU_ID_AQUI" # Coloque o número aqui quando encontrar
+
+if id_pixel != "1765782817497064":
+    st.markdown(f"""
+        <script>
+        !function(f,b,e,v,n,t,s)
+        {{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)}};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '{id_pixel}');
+        fbq('track', 'PageView');
+        </script>
+        """, unsafe_allow_html=True)
+
 # 2. Design Profissional (CSS)
 st.markdown("""
     <style>
@@ -15,14 +34,8 @@ st.markdown("""
         border: none;
         height: 40px;
     }
-    .stButton>button:hover {
-        background-color: #FFA500;
-        color: black;
-    }
-    h1 {
-        color: #FF8C00;
-        text-align: center;
-    }
+    .stButton>button:hover { background-color: #FFA500; color: black; }
+    h1 { color: #FF8C00; text-align: center; }
     .produto-container {
         text-align: center;
         padding: 15px;
@@ -38,7 +51,7 @@ st.markdown("""
 st.title("🛍️ Top Ofertas")
 st.write("<p style='text-align: center;'>As melhores ofertas com pagamento na entrega!</p>", unsafe_allow_html=True)
 
-# 4. Lista de Produtos (Adicione mais aqui seguindo o modelo)
+# 4. Lista de Produtos
 produtos = [
     {
         "nome": "Cinta Colete Modeladora", 
@@ -69,12 +82,11 @@ for i, produto in enumerate(produtos):
             st.markdown(f"**[CLIQUE AQUI PARA FINALIZAR]({produto['link']})**")
         st.markdown('</div>', unsafe_allow_html=True)
 
-# 6. Suporte via WhatsApp na Barra Lateral
+# 6. Suporte via WhatsApp
 st.sidebar.title("Top Ofertas")
 st.sidebar.write("---")
 st.sidebar.write("### Precisa de ajuda?")
 
-# COLOQUE SEU NÚMERO ABAIXO (Ex: 55 + DDD + Numero)
 meu_whatsapp = "5547997270179" 
 link_whatsapp = f"https://wa.me/{meu_whatsapp}?text=Olá! Estava na loja Top Ofertas e gostaria de tirar uma dúvida."
 
