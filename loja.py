@@ -1,137 +1,141 @@
 import streamlit as st
 
-# 1. Configuração de Estilo e Página
+# 1. Configuração e Estilo de Alta Fidelidade
 st.set_page_config(page_title="Top Ofertas - Oficial", page_icon="🛍️", layout="wide")
 
-# Pixel do Facebook
-id_pixel = "2011090373033062" 
-st.markdown(f"""
-<script>
-!function(f,b,e,v,n,t,s)
-{{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)}};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '{id_pixel}');
-fbq('track', 'PageView');
-</script>
-""", unsafe_allow_html=True)
-
-# CSS Customizado - Identidade Top Ofertas
 st.markdown("""
     <style>
-    .stApp { background-color: #050505; color: #ffffff; }
-    .header-top { background-color: #FF8C00; padding: 10px; text-align: center; font-weight: bold; color: black; border-radius: 0 0 15px 15px; margin-bottom: 20px; }
-    .produto-card { border: 1px solid #222; border-radius: 15px; padding: 20px; background-color: #0f0f0f; transition: 0.3s; text-align: center; }
-    .produto-card:hover { border-color: #FF8C00; box-shadow: 0 0 15px rgba(255,140,0,0.2); }
-    .banner-box { background: linear-gradient(90deg, #FF8C00 0%, #ffae42 100%); padding: 40px; border-radius: 20px; text-align: center; color: black; margin-bottom: 30px; }
-    .stButton>button { background-color: #FF8C00 !important; color: black !important; border-radius: 10px !important; font-weight: bold !important; height: 50px; border: none; }
-    .stButton>button:hover { background-color: #e67e00 !important; }
-    h1, h2, h3 { color: #FF8C00 !important; }
+    /* Fundo e Fonte */
+    .stApp { background-color: #f5f5f5; color: #333333; }
+    
+    /* Cabeçalho Superior Amarelo */
+    .main-header {
+        background-color: #FFF159;
+        padding: 15px 5%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: -6rem -5rem 2rem -5rem;
+    }
+    
+    /* Card de Produto Estilo Mercado Livre */
+    .card-resumo {
+        background-color: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #eeeeee;
+        transition: 0.3s;
+        cursor: pointer;
+        text-align: center;
+        height: 450px;
+    }
+    .card-resumo:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        border-color: #3483fa;
+    }
+    
+    /* Imagens dos Produtos */
+    .img-produto {
+        max-height: 200px;
+        object-fit: contain;
+        margin-bottom: 15px;
+    }
+
+    /* Botões */
+    .stButton>button {
+        background-color: #3483fa !important;
+        color: white !important;
+        border: none !important;
+        font-weight: bold !important;
+        border-radius: 6px !important;
+    }
+    
+    /* Preço em Destaque */
+    .preco-texto {
+        font-size: 24px;
+        font-weight: 500;
+        color: #333;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# 2. Banco de Dados dos Produtos
+# 2. Banco de Dados com Descrição e Detalhes
 produtos = {
     "cinta": {
-        "nome": "Cinta Colete Modeladora Premium",
-        "preco": "99,99",
+        "nome": "Cinta Colete Modeladora Ampla Carmigras",
+        "preco": "99,90",
         "img": "https://logzz-s3.s3.us-east-2.amazonaws.com/uploads/files/products/20240714-131356prok2m05.jpg",
         "link": "https://entrega.logzz.com.br/pay/mem6qq3rw/vlqxc-1-unidade",
         "regioes": ["SC", "SP", "PR"],
-        "desc": "A Cinta Colete Modeladora é o segredo para uma silhueta perfeita e correção postural instantânea. Feita com material respirável de alta durabilidade.",
-        "beneficios": ["✅ Redução imediata de medidas", "✅ Suporte lombar reforçado", "✅ Invisível sob a roupa"]
+        "desc": "A cinta original que você viu na TV. Modela sua cintura e melhora a postura instantaneamente.",
+        "especificacoes": ["Material: Neoprene de alta qualidade", "Fechamento: Zíper e Velcro", "Cor: Preto"]
     },
     "depilador": {
-        "nome": "Depilador SkinLiss Pro",
+        "nome": "Depilador SkinLiss - Finishing Touch",
         "preco": "89,90",
         "img": "https://a-static.mlcdn.com.br/470x352/depilador-yes-finishing-touch-sem-fio-ativacao-sensor-de-luz-rosto-e-corpo-depiladorlaser/connectcellcomercio/depiladorroxo16/958b6b6bada9045715419c0988f0a3b6.jpeg",
         "link": "https://entrega.logzz.com.br/pay/mem0go36g/azjol-skinliss-9999",
         "regioes": ["SP", "RJ", "MG"],
-        "desc": "Tecnologia de micro-oscilação que remove os pelos sem dor e sem irritação. Ideal para todas as partes do corpo.",
-        "beneficios": ["✅ 100% Indolor", "✅ Bateria recarregável via USB", "✅ Sensor de contato inteligente"]
+        "desc": "Depilação sem dor com tecnologia de micro-oscilação. Seguro para peles sensíveis.",
+        "especificacoes": ["Bateria: Recarregável USB", "Uso: Seco", "Luz: LED Integrada"]
     }
 }
 
-# 3. Gerenciamento de Navegação (Session State)
-if 'pagina' not in st.session_state:
-    st.session_state.pagina = 'home'
+# 3. Lógica de Navegação
+if 'detalhe' not in st.session_state:
+    st.session_state.detalhe = None
 
-def ir_para(nome_pagina):
-    st.session_state.pagina = nome_pagina
-    st.rerun()
+# Cabeçalho Principal (Fica em todas as páginas)
+st.markdown('<div class="main-header"><h2 style="color:#2d3277; margin:0;">Top Ofertas - Oficial</h2></div>', unsafe_allow_html=True)
 
-# --- PÁGINA: VITRINE (HOME) ---
-if st.session_state.pagina == 'home':
-    st.markdown('<div class="header-top">🔥 OFERTAS DA SEMANA COM PAGAMENTO NA ENTREGA</div>', unsafe_allow_html=True)
+# --- VISÃO: DETALHES DO PRODUTO ---
+if st.session_state.detalhe:
+    p = produtos[st.session_state.detalhe]
     
-    # Header Estilo Mercado Livre
-    col_logo, col_search = st.columns([1, 2])
-    with col_logo:
-        st.title("TOP OFERTAS")
-    with col_search:
-        busca = st.text_input("", placeholder="🔍 O que você está procurando hoje?", label_visibility="collapsed")
+    if st.button("⬅️ Voltar para a vitrine"):
+        st.session_state.detalhe = None
+        st.rerun()
 
-    # Banner Promocional
-    st.markdown("""
-        <div class="banner-box">
-            <h1>OFERTAS BLACK OUT ⚡</h1>
-            <p>Produtos selecionados com entrega grátis e pagamento somente no ato do recebimento!</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    st.subheader("Explore nossos Destaques")
+    col1, col2 = st.columns([1, 1])
     
-    # Filtro de Busca Simples
-    exibir = {k: v for k, v in produtos.items() if busca.lower() in v['nome'].lower()} if busca else produtos
-
-    cols = st.columns(3)
-    for idx, (id_p, p) in enumerate(exibir.items()):
-        with cols[idx % 3]:
-            st.markdown(f'<div class="produto-card">', unsafe_allow_html=True)
-            st.image(p["img"], use_container_width=True)
-            st.write(f"### {p['nome']}")
-            st.write(f"## R$ {p['preco']}")
-            if st.button("VER DETALHES", key=id_p):
-                ir_para(id_p)
-            st.markdown('</div>', unsafe_allow_html=True)
-
-# --- PÁGINA: DETALHES DO PRODUTO ---
-elif st.session_state.pagina in produtos:
-    p = produtos[st.session_state.pagina]
-    
-    if st.button("⬅️ VOLTAR PARA A VITRINE"):
-        ir_para('home')
-
-    st.write("---")
-    col_img, col_info = st.columns([1, 1])
-
-    with col_img:
+    with col1:
         st.image(p["img"], use_container_width=True)
-    
-    with col_info:
+        
+    with col2:
         st.title(p["nome"])
-        st.markdown(f"<h2 style='color: #00ff00;'>R$ {p['preco']}</h2>", unsafe_allow_html=True)
-        st.write("⭐⭐⭐⭐⭐ (4.9/5 - 124 avaliações)")
+        st.markdown(f'<p class="preco-texto">R$ {p["preco"]}</p>', unsafe_allow_html=True)
+        st.write("Disponível em estoque!")
         
         st.write("---")
-        st.subheader("📍 Verificar Disponibilidade")
-        cep = st.text_input("Informe seu CEP para ver estoque na região:", placeholder="00000-000")
-        
+        cep = st.text_input("📍 Informe seu CEP para entrega rápida:", placeholder="00000-000")
         if cep:
-            st.success("✅ PRODUTO DISPONÍVEL! Entrega em até 24h.")
-            st.link_button("🔥 COMPRAR E PAGAR NA ENTREGA", p["link"])
+            st.success("✅ Disponível para sua região com pagamento na entrega!")
+            st.link_button("COMPRAR AGORA", p["link"])
         
-        st.write("---")
-        st.subheader("Descrição do Produto")
+        st.subheader("Descrição")
         st.write(p["desc"])
-        for ben in p["beneficios"]:
-            st.write(ben)
+        for esp in p["especificacoes"]:
+            st.write(f"• {esp}")
 
-# Rodapé Fixo
-st.sidebar.write("---")
-st.sidebar.markdown("### Suporte 24h")
-st.sidebar.link_button("Falar no WhatsApp 💬", "https://wa.me/5547997270179")
+# --- VISÃO: VITRINE ---
+else:
+    # Banner Rotativo (Simulado)
+    st.image("https://images.tcdn.com.br/img/editor/up/649983/Banner_Topo_Desktop_1.jpg", use_container_width=True)
+    
+    st.subheader("Ofertas que você pode gostar")
+    
+    cols = st.columns(4) # 4 colunas para imagens menores
+    for idx, (id_p, p) in enumerate(produtos.items()):
+        with cols[idx]:
+            st.markdown(f"""
+                <div class="card-resumo">
+                    <img src="{p['img']}" class="img-produto" style="width:100%;">
+                    <h4 style="font-size:16px;">{p['nome']}</h4>
+                    <p style="color:#00a650; font-weight:bold; font-size:20px;">R$ {p['preco']}</p>
+                    <p style="font-size:12px; color:#666;">Frete Grátis</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button(f"Ver detalhes", key=id_p):
+                st.session_state.detalhe = id_p
+                st.rerun()
