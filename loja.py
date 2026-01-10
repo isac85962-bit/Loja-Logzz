@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="Top Ofertas - Oficial", page_icon="🛍️", layout="wide")
 
 # 2. CONFIGURAÇÃO DO PIXEL FACEBOOK (Já com o seu ID!)
-id_pixel = "1765782817497064" 
+id_pixel = "2011090373033062" 
 
 st.markdown(f"""
     <script>
