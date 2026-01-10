@@ -3,7 +3,7 @@ import streamlit as st
 # 1. Configuração da Página
 st.set_page_config(page_title="Top Ofertas - Oficial", page_icon="🛍️", layout="wide")
 
-# 2. Estilo Visual (CSS)
+# 2. Design Profissional (CSS)
 st.markdown("""
     <style>
     .stButton>button {
@@ -25,19 +25,20 @@ st.markdown("""
     }
     .produto-container {
         text-align: center;
-        padding: 10px;
+        padding: 15px;
         border: 1px solid #333;
         border-radius: 15px;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+        background-color: #111;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # 3. Cabeçalho
-st.title("🛍️ Top ofertas")
+st.title("🛍️ Top Ofertas")
 st.write("<p style='text-align: center;'>As melhores ofertas com pagamento na entrega!</p>", unsafe_allow_html=True)
 
-# 4. Lista de Produtos
+# 4. Lista de Produtos (Adicione mais aqui seguindo o modelo)
 produtos = [
     {
         "nome": "Cinta Colete Modeladora", 
@@ -53,25 +54,34 @@ produtos = [
     }
 ]
 
-# 5. Vitrine em 3 Colunas
+# 5. Vitrine em Grade (3 colunas)
 cols = st.columns(3)
 
 for i, produto in enumerate(produtos):
-    with cols[i % 3]: # Isso distribui os produtos entre as 3 colunas
+    with cols[i % 3]: 
         st.markdown('<div class="produto-container">', unsafe_allow_html=True)
-        
-        # Imagem menor e centralizada
         st.image(produto["imagem"], width=200)
-        
         st.write(f"**{produto['nome']}**")
         st.write(f"### R$ {produto['preco']:.2f}")
         
         if st.button(f"COMPRAR AGORA", key=f"btn_{i}"):
             st.success("A abrir checkout...")
             st.markdown(f"**[CLIQUE AQUI PARA FINALIZAR]({produto['link']})**")
-        
         st.markdown('</div>', unsafe_allow_html=True)
 
-# 6. Rodapé Lateral
+# 6. Suporte via WhatsApp na Barra Lateral
 st.sidebar.title("Top Ofertas")
-st.sidebar.info("Dúvidas? Entre em contato com o nosso suporte.")
+st.sidebar.write("---")
+st.sidebar.write("### Precisa de ajuda?")
+
+# COLOQUE SEU NÚMERO ABAIXO (Ex: 55 + DDD + Numero)
+meu_whatsapp = "5547997270179" 
+link_whatsapp = f"https://wa.me/{meu_whatsapp}?text=Olá! Estava na loja Top Ofertas e gostaria de tirar uma dúvida."
+
+st.sidebar.markdown(f"""
+    <a href="{link_whatsapp}" target="_blank">
+        <button style="width:100%; border-radius:10px; background-color:#25D366; color:white; font-weight:bold; border:none; height:45px; cursor:pointer;">
+            Falar no WhatsApp 💬
+        </button>
+    </a>
+""", unsafe_allow_html=True)
