@@ -20,104 +20,71 @@ fbq('track', 'PageView');
 </script>
 """, unsafe_allow_html=True)
 
-# 3. Estilo CSS Personalizado
+# 3. Estilo CSS - PADRÃO TOP OFERTAS
 st.markdown("""
     <style>
-    .main { background-color: #0e1117; }
-    .stButton>button { width: 100%; border-radius: 8px; font-weight: bold; height: 50px; }
-    .btn-comprar { background-color: #FF8C00 !important; color: white !important; font-size: 20px !important; }
-    .produto-card { text-align: center; padding: 15px; border: 1px solid #333; border-radius: 15px; background-color: #161b22; transition: 0.3s; cursor: pointer; }
-    .produto-card:hover { border-color: #FF8C00; }
-    .desc-box { background-color: #161b22; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+    /* Fundo Geral */
+    .stApp { background-color: #050505; color: #ffffff; }
+    
+    /* Botões */
+    .stButton>button { 
+        width: 100%; 
+        border-radius: 12px; 
+        font-weight: bold; 
+        height: 55px; 
+        background-color: #FF8C00 !important; 
+        color: white !important;
+        border: none;
+        transition: 0.3s;
+    }
+    .stButton>button:hover { 
+        background-color: #e67e00 !important; 
+        transform: scale(1.02);
+    }
+
+    /* Cards de Produto */
+    .produto-card { 
+        text-align: center; 
+        padding: 20px; 
+        border: 2px solid #1a1a1a; 
+        border-radius: 20px; 
+        background-color: #0f0f0f; 
+        transition: 0.4s;
+    }
+    .produto-card:hover { border-color: #FF8C00; box-shadow: 0px 0px 15px rgba(255, 140, 0, 0.3); }
+
+    /* Caixas de Texto e Detalhes */
+    .desc-box { 
+        background-color: #0f0f0f; 
+        padding: 25px; 
+        border-radius: 15px; 
+        border: 1px solid #222; 
+        margin-top: 20px;
+    }
+    
+    /* Títulos */
+    h1, h2, h3 { color: #FF8C00 !important; }
+    
+    /* Input de CEP */
+    div[data-baseweb="input"] {
+        border-radius: 10px;
+        border: 1px solid #FF8C00;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# 4. Banco de Dados dos Produtos (Configuração de Regiões aqui)
+# 4. Banco de Dados dos Produtos
 produtos = {
     "cinta": {
         "nome": "Cinta Colete Modeladora",
         "preco": "99,99",
         "img": "https://logzz-s3.s3.us-east-2.amazonaws.com/uploads/files/products/20240714-131356prok2m05.jpg",
         "link": "https://entrega.logzz.com.br/pay/mem6qq3rw/vlqxc-1-unidade",
-        "regioes": ["SC", "SP", "PR"], # Atende SC, SP e PR
+        "regioes": ["SC", "SP", "PR"], 
         "desc": "A nossa Cinta Colete Premium foi desenhada para oferecer compressão máxima com conforto total. Ideal para uso diário, auxilia na postura e modela a cintura instantaneamente.",
-        "beneficios": ["✅ Não enrola", "✅ Material Respirável", "✅ Ajuste Duplo"]
+        "beneficios": ["✅ Não enrola durante o uso", "✅ Material altamente respirável", "✅ Ajuste duplo de alta compressão"]
     },
     "depilador": {
         "nome": "Depilador SkinLiss",
         "preco": "99,99",
-        "img": "https://a-static.mlcdn.com.br/470x352/depilador-yes-finishing-touch-sem-fio-ativacao-sensor-de-luz-rosto-e-corpo-depiladorlaser/connectcellcomercio/depiladorroxo16/958b6b6bada9045715419c0988f0a3b6.jpeg",
-        "link": "https://entrega.logzz.com.br/pay/mem0go36g/azjol-skinliss-9999",
-        "regioes": ["SP"], # SÓ atende SP
-        "desc": "Diga adeus à dor! O Depilador SkinLiss utiliza tecnologia de micro-oscilação para remover pelos indesejados sem cortes ou irritações. Portátil e recarregável.",
-        "beneficios": ["✅ Sem dor", "✅ Sensor de Luz", "✅ Para todo o corpo"]
-    }
-}
-
-# 5. Lógica de Navegação
-if 'pagina' not in st.session_state:
-    st.session_state.pagina = 'home'
-
-def mudar_pagina(nome_pag):
-    st.session_state.pagina = nome_pag
-    st.rerun()
-
-# --- PÁGINA: VITRINE (HOME) ---
-if st.session_state.pagina == 'home':
-    st.title("🛍️ Top Ofertas")
-    st.write("<p style='text-align: center;'>Toque no produto para ver detalhes e disponibilidade</p>", unsafe_allow_html=True)
-    st.write("---")
-    
-    cols = st.columns(2)
-    for i, (id_p, p) in enumerate(produtos.items()):
-        with cols[i % 2]:
-            st.markdown(f'<div class="produto-card">', unsafe_allow_html=True)
-            st.image(p["img"], use_container_width=True)
-            st.subheader(p["nome"])
-            st.write(f"### R$ {p['preco']}")
-            if st.button(f"Ver Detalhes", key=id_p):
-                mudar_pagina(id_p)
-            st.markdown('</div>', unsafe_allow_html=True)
-
-# --- PÁGINA: DETALHES DO PRODUTO ---
-elif st.session_state.pagina in produtos:
-    p = produtos[st.session_state.pagina]
-    
-    if st.button("⬅️ Voltar para a Loja"):
-        mudar_pagina('home')
-        
-    col1, col2 = st.columns([1, 1.2])
-    
-    with col1:
-        st.image(p["img"], use_container_width=True)
-        
-    with col2:
-        st.title(p["nome"])
-        st.write(f"## R$ {p['preco']}")
-        st.write("---")
-        
-        # Verificador de CEP dinâmico
-        st.subheader("🚚 Verificar Entrega")
-        cep = st.text_input("Digite seu CEP:", placeholder="00000-000")
-        
-        if cep:
-            # Simulamos a verificação da região pelo início do CEP (Exemplo simplificado)
-            # Na vida real, você pode melhorar essa lógica
-            if "SC" in p["regioes"] or "SP" in p["regioes"]: 
-                # Aqui você pode customizar: Se o produto atende a região, sucesso!
-                st.success(f"✅ Disponível para entrega rápida em sua região!")
-                st.write("⏱️ **Prazo:** Receba em até 24h e pague na entrega.")
-                st.link_button("🔥 FINALIZAR PEDIDO AGORA", p["link"], type="primary")
-            else:
-                st.error("❌ Desculpe, este produto específico não está disponível para sua região no momento.")
-
-        st.markdown('<div class="desc-box">', unsafe_allow_html=True)
-        st.write("### Descrição")
-        st.write(p["desc"])
-        for b in p["beneficios"]:
-            st.write(b)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-# 6. Suporte Lateral
-st.sidebar.title("Suporte")
-st.sidebar.link_button("Dúvidas no WhatsApp 💬", "https://wa.me/5547997270179")
+        "img": "
